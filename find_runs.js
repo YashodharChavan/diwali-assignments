@@ -1,9 +1,4 @@
-const runs = [1, 2, 3, 4, 6, 4, 2, 1, 2, 3];;
-const answer = []
 
-let startIdx = 0;
-let endIdx = 0;
-let prevStatus = true;
 
 function isAscending(array) {
     for (let i = 0; i < array.length - 1; i++) {
@@ -21,18 +16,29 @@ function isDescending(array) {
     return true;
 }
 
-for (let i = 0; i < runs.length; i++) {
-    const isSeqAscending = prevStatus && isAscending(runs.slice(startIdx, endIdx))
-    const isSeqDescending = !prevStatus && isDescending(runs.slice(startIdx, endIdx))
+function getRuns() {
+    const runs = [1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3];
+    const answer = [];
 
-    if (!isSeqAscending && !isSeqDescending) {
-        prevStatus = !prevStatus;
-        answer.push(runs.slice(startIdx, endIdx - 1))
-        startIdx = endIdx - 1;
+    let startIdx = 0;
+    let endIdx = 0;
+    let prevStatus = true;
+
+    for (let i = 0; i < runs.length; i++) {
+        const isSeqAscending = prevStatus && isAscending(runs.slice(startIdx, endIdx))
+        const isSeqDescending = !prevStatus && isDescending(runs.slice(startIdx, endIdx))
+
+        if (!isSeqAscending && !isSeqDescending) {
+            prevStatus = !prevStatus;
+            answer.push(runs.slice(startIdx, endIdx - 1))
+            startIdx = endIdx - 1;
+        }
+
+        endIdx++;
     }
+    answer.push(runs.slice(startIdx, endIdx))
 
-    endIdx++;
+    return answer;
 }
 
-answer.push(runs.slice(startIdx, endIdx))
-console.log(answer)
+console.log(getRuns())
