@@ -1,15 +1,13 @@
-
-
-function isAscending(array) {
-    for (let i = 0; i < array.length - 1; i++) {
+function isAscending(array, startIdx, endIdx) {
+    for (let i = startIdx; i < endIdx - 1; i++) {
         if (array[i] > array[i + 1]) return false;
     }
 
     return true;
 }
 
-function isDescending(array) {
-    for (let i = 0; i < array.length - 1; i++) {
+function isDescending(array, startIdx, endIdx) {
+    for (let i = startIdx; i < endIdx - 1; i++) {
         if (array[i] < array[i + 1]) return false;
     }
 
@@ -25,8 +23,8 @@ function getRuns() {
     let prevStatus = true;
 
     for (let i = 0; i < runs.length; i++) {
-        const isSeqAscending = prevStatus && isAscending(runs.slice(startIdx, endIdx))
-        const isSeqDescending = !prevStatus && isDescending(runs.slice(startIdx, endIdx))
+        const isSeqAscending = prevStatus && isAscending(runs, startIdx, endIdx)
+        const isSeqDescending = !prevStatus && isDescending(runs, startIdx, endIdx)
 
         if (!isSeqAscending && !isSeqDescending) {
             prevStatus = !prevStatus;
