@@ -1,23 +1,15 @@
-function calcSum(array, startIdx, endIdx) {
-    let sum = 0;
-
-    for(let idx = startIdx; idx<endIdx; idx++) {
-        sum+=array[idx]
-    }
-
-    return sum
-}
-
 function maximumSubarray(array) {
     let maxSum = -Infinity;
     let answer = [];
-    
-    for(let i=0; i<array.length; i++) {
-        for(let j=i+1; j<array.length; j++) {
-            const sum = calcSum(array, i, j);
+    let sum = 0;
 
-            if(maxSum < sum) {
-                answer = array.slice(i, j)
+    for (let startIdx = 0; startIdx < array.length; startIdx++) {
+        sum = 0;
+        for (let endIdx = startIdx; endIdx < array.length; endIdx++) {
+            sum += array[endIdx];
+
+            if (maxSum < sum) {
+                answer = array.slice(startIdx, endIdx + 1)
                 maxSum = sum;
             }
         }
@@ -25,5 +17,7 @@ function maximumSubarray(array) {
 
     return answer;
 }
-const input = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+
+
+const input = [7, -3, 4, -2, 5, -10, 6];
 console.log(maximumSubarray(input))
