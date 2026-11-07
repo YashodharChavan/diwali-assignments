@@ -53,30 +53,32 @@ function drawBitmap(world, bitmap) {
     }
 }
 
-function detectHorizontalEdge(world, bitmap) {
+function highlightVerticalEdge(world, bitmap) {
     const { points } = bitmap;
     const size = world.cellSize;
 
     for (let y = 0; y < bitmap.height; y++) {
-        let curr = points[y][0];
-        for (let x = 0; x < bitmap.width; x++) {
-            if (Math.abs(curr - points[y][x]) > world.threshold) {
-                curr = points[y][x];
+        for (let x = 1; x < bitmap.width; x++) {
+            const prevPoint = points[y][x - 1];
+            const currPoint = points[y][x];
+
+            if (Math.abs(prevPoint - currPoint) > world.threshold) {
                 r.DrawRectangle(x * size, y * size, 3, size, r.RED);
             }
         }
     }
 }
 
-function detectVerticalEdge(world, bitmap) {
+function highlightHorizontalEdge(world, bitmap) {
     const { points } = bitmap;
     const size = world.cellSize;
 
     for (let x = 0; x < bitmap.width; x++) {
-        let curr = points[0][x]
-        for (let y = 0; y < bitmap.height; y++) {
-            if (Math.abs(curr - points[y][x]) > world.threshold) {
-                curr = points[y][x];
+        for (let y = 1; y < bitmap.height; y++) {
+            const prevPoint = points[y - 1][x];
+            const currPoint = points[y][x];
+            
+            if (Math.abs(prevPoint - currPoint) > world.threshold) {
                 r.DrawRectangle(x * size, y * size, size, 4, r.RED);
             }
         }
@@ -84,8 +86,8 @@ function detectVerticalEdge(world, bitmap) {
 }
 
 function highlightEdges(world, bitmap) {
-    detectHorizontalEdge(world, bitmap);
-    detectVerticalEdge(world, bitmap);
+    highlightVerticalEdge(world, bitmap);
+    highlightHorizontalEdge(world, bitmap);
 }
 
 function draw(world) {
