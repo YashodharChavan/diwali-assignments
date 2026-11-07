@@ -5,6 +5,7 @@ function setup() {
     const world = {
         screen: {},
         cellSize: 40,
+        threshold: 10
     }
 
     world.screen.width = bitmap.width * world.cellSize;
@@ -59,7 +60,7 @@ function detectHorizontalEdge(world, bitmap) {
     for (let y = 0; y < bitmap.height; y++) {
         let curr = points[y][0];
         for (let x = 0; x < bitmap.width; x++) {
-            if (Math.abs(curr - points[y][x]) > 30) {
+            if (Math.abs(curr - points[y][x]) > world.threshold) {
                 curr = points[y][x];
                 r.DrawRectangle(x * size, y * size, 3, size, r.RED);
             }
@@ -74,7 +75,7 @@ function detectVerticalEdge(world, bitmap) {
     for (let x = 0; x < bitmap.width; x++) {
         let curr = points[0][x]
         for (let y = 0; y < bitmap.height; y++) {
-            if (Math.abs(curr - points[y][x]) > 30) {
+            if (Math.abs(curr - points[y][x]) > world.threshold) {
                 curr = points[y][x];
                 r.DrawRectangle(x * size, y * size, size, 4, r.RED);
             }
