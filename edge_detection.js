@@ -92,6 +92,7 @@ function highlightEdges(world, bitmap) {
 
 function draw(world) {
     r.BeginDrawing();
+    
     drawBitmap(world, bitmap);
 
     highlightEdges(world, bitmap)
