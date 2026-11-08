@@ -21,16 +21,15 @@ function isEqual(a, b) {
     if (Object.keys(a).length !== Object.keys(b).length) return false;
 
     for (let key of Object.keys(a)) {
-        if (typeof a[key] === 'object' && typeof b[key] === 'object') return isEqual(a[key], b[key]);
-        if (a[key] !== b[key]) return false;
+        if (!isEqual(a[key], b[key])) return false;
     }
 
     return true;
 }
 
 function test(testCases) {
-    for(const testCase of testCases) {
-        if(isEqual(testCase.a, testCase.b) === testCase.expected) {
+    for (const testCase of testCases) {
+        if (isEqual(testCase.a, testCase.b) === testCase.expected) {
             console.log("TEST STATUS: PASS")
         }
         else {
