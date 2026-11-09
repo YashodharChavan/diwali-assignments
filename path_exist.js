@@ -22,7 +22,9 @@ const connections = [
 ];
 
 const src = "Mumbai"
-const dest = "Kolkata"
+const dest = "Guwahati"
+const visited = [];
+
 
 function getSrcDetails(connections, src) {
     for (const connection of connections) {
@@ -30,26 +32,29 @@ function getSrcDetails(connections, src) {
     }
 }
 
-function pathExist(connections, src, dest, orgSrc = src) {
+function pathExist(connections, src, dest) {
+    // we have to recurse those cities which we have not visited. 
+    // if we have visited those cities then simply continue the loop.
+
     const srcDetails = getSrcDetails(connections, src);
 
+    // how to handle those cities which dont have any connections?? 
     if(!srcDetails) return 'skip';
 
-    for (const connection of srcDetails.connections) {
-        console.log('src: ', src);
-        console.log('dest: ', dest);
-        console.log('next station: ', connection);
-        console.log()
+    for(const connection of srcDetails.connections) {
+        console.log(connection)
+        if(connection === dest) return true;
 
-        if (connection === dest) return true;
-        if (connection === orgSrc) return 'skip';
+        if(visited.includes(connection)) continue;
 
-        const nextPath = pathExist(connections, connection, dest, orgSrc)
+        visited.push(connection);
+        const nextPath = pathExist(connections, connection, dest);
         if(nextPath === 'skip') continue;
         return nextPath;
     }
 
-    return false; 
+    return false;
+
 }
 
 console.log(pathExist(connections, src, dest))
