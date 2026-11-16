@@ -12,6 +12,12 @@ const testCases = [
         title: "intentional undefined and absence of data",
     },
     {
+        input1: 10,
+        input2: 20,
+        expected: false,
+        title: "two integer equality check",
+    },
+    {
         input1: "a",
         input2: "a",
         expected: true,
@@ -92,15 +98,15 @@ function getType(a) {
 
 function isEqual(a, b) {
     if (a === b) return true;
-    if (Number.isNaN(a) && Number.isNaN(b)) return false;
     if (getType(a) !== getType(b)) return false;
     if (Object.keys(a).length !== Object.keys(b).length) return false;
 
-    for (const key of Object.keys(a)) {
-        if (!(key in b) || !isEqual(a[key], b[key])) return false;
+    for (const key in a) {
+        if (!(key in b)) return false;
+        return isEqual(a[key], b[key]);
     }
 
-    return true;
+    return Array.isArray(a) ;
 }
 
 function test(testCases) {
