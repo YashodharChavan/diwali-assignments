@@ -24,8 +24,8 @@ const testCases = [
         title: "basic string equality check",
     },
     {
-        input1: [],
-        input2: [],
+        input1: {},
+        input2: {},
         expected: true,
         title: "empty array equality check",
     },
