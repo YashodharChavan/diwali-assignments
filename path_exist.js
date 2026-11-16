@@ -21,40 +21,44 @@ const connections = [
     },
 ];
 
-const src = "Mumbai"
-const dest = "Guwahati"
+const src = "Bangalore";
+const dest = "Kolkata";
 const visited = [];
+const path = [];
 
-
-function getSrcDetails(connections, src) {
+function getSrcDetails(src) {
     for (const connection of connections) {
         if (connection.city === src) return connection;
     }
 }
 
-function pathExist(connections, src, dest) {
-    // we have to recurse those cities which we have not visited. 
-    // if we have visited those cities then simply continue the loop.
+function pathExist(src, dest) {
+    path.push(src);
+    if (src === dest) return true;
+    visited.push(src);
 
-    const srcDetails = getSrcDetails(connections, src);
+    const srcDetails = getSrcDetails(src);
+    if (!srcDetails) return;
 
-    // how to handle those cities which dont have any connections?? 
-    if(!srcDetails) return 'skip';
+    for (const connection of srcDetails.connections) {
+        if (visited.includes(connection)) continue;
 
-    for(const connection of srcDetails.connections) {
-        console.log(connection)
-        if(connection === dest) return true;
-
-        if(visited.includes(connection)) continue;
-
-        visited.push(connection);
-        const nextPath = pathExist(connections, connection, dest);
-        if(nextPath === 'skip') continue;
-        return nextPath;
+        const next = pathExist(connection, dest, src);
+        if (!next) {
+            const index = path.indexOf(connection);
+            if (index !== -1) {
+                path.splice(index, 1);
+            }
+            continue;
+        }
+        return next;
     }
 
     return false;
-
 }
 
-console.log(pathExist(connections, src, dest))
+console.log(
+    `does path exist between ${src} and ${dest}: `,
+    pathExist(src, dest),
+);
+console.log("PATH: ", path);
