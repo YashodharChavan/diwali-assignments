@@ -1,42 +1,41 @@
-function isAscending(array, startIdx, endIdx) {
-    for (let i = startIdx; i < endIdx - 1; i++) {
-        if (array[i] > array[i + 1]) return false;
-    }
+const runs = [1, 1, 1, 1, 3, 2, 1, 2, 1];
+const log = [];
 
-    return true;
+function getCurrentRun(runs, idx) {
+    return Math.sign(runs[idx] - runs[Math.max(idx - 1, 0)]);
 }
 
-function isDescending(array, startIdx, endIdx) {
-    for (let i = startIdx; i < endIdx - 1; i++) {
-        if (array[i] < array[i + 1]) return false;
-    }
-
-    return true;
+function hasDirectionChanged(run, isSignChanged, curr) {
+    return run.length && isSignChanged && curr
 }
 
-function getRuns() {
-    const runs = [1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 3];
+function getRuns(runs) {
+    if (runs.length < 3) return runs;
+
     const answer = [];
+    let run = [];
+    let idx = 0;
+    let prev = 0;
 
-    let startIdx = 0;
-    let endIdx = 0;
-    let prevStatus = true;
+    while (idx < runs.length) {
+        const curr = getCurrentRun(runs, idx);
+        const isSignChanged = prev === -curr;
 
-    for (let i = 0; i < runs.length; i++) {
-        const isSeqAscending = prevStatus && isAscending(runs, startIdx, endIdx)
-        const isSeqDescending = !prevStatus && isDescending(runs, startIdx, endIdx)
+        prev = curr;
 
-        if (!isSeqAscending && !isSeqDescending) {
-            prevStatus = !prevStatus;
-            answer.push(runs.slice(startIdx, endIdx - 1))
-            startIdx = endIdx - 1;
+        if (run.length && isSignChanged && curr) {
+            answer.push(run);
+            run = [];
+            prev = 0;
         }
 
-        endIdx++;
+        run.push(runs[idx++]);
     }
-    answer.push(runs.slice(startIdx, endIdx))
+
+    answer.push(run);
 
     return answer;
 }
 
-console.log(getRuns())
+console.log(getRuns(runs));
+// console.table(log);
