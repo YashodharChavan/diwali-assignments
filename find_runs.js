@@ -1,28 +1,25 @@
-const runs = [1, 2, 3, 4, 3, 2, 1];
-const log = [];
+const runs = [1, 2, 3, 4, 5, 5, 5, 4, 4, 3, 3, 2, 1, 1, 1, 1];
 
-function getCurrentRun(runs, idx) {
-    const prevIdx = Math.max(idx - 1, 0);
-    return Math.sign(runs[idx] - runs[prevIdx]);
+function doesBelongToCurrentRun(run, element) {
+    if (run.length <= 1) return true;
+
+    const currDirection = Math.sign(element - run.at(-1));
+    const prevDirection = Math.sign(run.at(-1) - run.at(-2));
+
+    return (
+        currDirection === prevDirection ||
+        (currDirection === 0 && prevDirection === 1)
+    );
 }
 
 function getRuns(runs) {
     const answer = [[]];
-    let prev = 0;
-
-    for (const idx in runs) {
-        const curr = getCurrentRun(runs, idx);
-        const isSignChanged = prev === -curr;
-        const hasDirectionChanged = isSignChanged && curr;
-
-        if (curr !== 0) prev = curr;
-
-        if (hasDirectionChanged) {
+    for (const run of runs) {
+        if (!doesBelongToCurrentRun(answer.at(-1), run)) {
             answer.push([]);
-            prev = 0;
         }
 
-        answer.at(-1).push(runs[idx]);
+        answer.at(-1).push(run);
     }
 
     return answer;
